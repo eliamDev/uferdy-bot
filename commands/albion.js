@@ -86,12 +86,12 @@ async function handlePlayerInfo(interaction) {
         const ratio = deathFame > 0 ? (killFame / deathFame).toFixed(2) : killFame > 0 ? '∞' : '0.00';
         
         const embed = new EmbedBuilder()
-            .setTitle(`🛡️ ${playerData.Name}`)
+            .setTitle(`${playerData.Name}`)
             .setColor(0x0099FF)
             .addFields(
                 { name: 'Guild', value: playerData.GuildName || 'Sin guild', inline: true },
                 { name: 'Fame Total', value: (playerData.Fame || playerData.TotalKillFame || playerData.LifetimeStatistics?.PvE?.Total || 0).toLocaleString(), inline: true },
-                { name: 'Info K/D', value: '>1.0 = Más fame ganado\n<1.0 = Más fame perdido\n∞ = Solo kills', inline: true },
+                { name: 'Info K/D', value: '```\n>1.0 = Más fame ganado\n<1.0 = Más fame perdido\n  ∞  = Solo kills\n```', inline: true },
                 { name: 'K/D Ratio', value: ratio, inline: true },
                 { name: 'Kill Fame', value: killFame.toLocaleString(), inline: true },
                 { name: 'Death Fame', value: deathFame.toLocaleString(), inline: true }
