@@ -95,6 +95,7 @@ async function handlePlayerInfo(interaction) {
                 { name: 'K/D Ratio', value: ratio, inline: true },
                 { name: 'Fame Total', value: (playerData.Fame || playerData.TotalKillFame || playerData.LifetimeStatistics?.PvE?.Total || 0).toLocaleString(), inline: true }
             )
+            .setFooter({ text: 'K/D Ratio: >1.0 = Más fame ganado | <1.0 = Más fame perdido | ∞ = Solo kills' })
             .setTimestamp();
 
         await interaction.editReply({ embeds: [embed] });
