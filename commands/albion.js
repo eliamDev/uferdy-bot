@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 
+const BASE_URL = 'https://gameinfo.albiononline.com/api/gameinfo';
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('albion')
@@ -8,7 +10,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('player')
-                .setDescription('Busca información de un jugador')
+                .setDescription('Busca información de un jugador en el servidor America')
                 .addStringOption(option =>
                     option.setName('nombre')
                         .setDescription('Nombre del jugador')
@@ -16,7 +18,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('guild')
-                .setDescription('Busca información de una guild')
+                .setDescription('Busca información de una guild en el servidor America')
                 .addStringOption(option =>
                     option.setName('nombre')
                         .setDescription('Nombre de la guild')
@@ -24,7 +26,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('kills')
-                .setDescription('Últimas kills de un jugador')
+                .setDescription('Últimas kills de un jugador en el servidor America')
                 .addStringOption(option =>
                     option.setName('nombre')
                         .setDescription('Nombre del jugador')
@@ -65,27 +67,33 @@ async function handlePlayerInfo(interaction) {
     await interaction.deferReply();
 
     try {
-        const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(playerName)}`);
+        const response = await axios.get(`${BASE_URL}/search?q=${encodeURIComponent(playerName)}`);
         const players = response.data.players;
 
         if (!players || players.length === 0) {
-            await interaction.editReply(`No se encontró ningún jugador con el nombre "${playerName}".`);
+            await interaction.editReply(`No se encontró ningún jugador con el nombre "${playerName}" en el servidor America.`);
             return;
         }
 
         const player = players[0];
-        const playerDetails = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/players/${player.Id}`);
+        const playerDetails = await axios.get(`${BASE_URL}/players/${player.Id}`);
         const playerData = playerDetails.data;
+        
 
+        // Calcular ratio kill/death fame
+        const killFame = playerData.KillFame || 0;
+        const deathFame = playerData.DeathFame || 0;
+        const ratio = deathFame > 0 ? (killFame / deathFame).toFixed(2) : killFame > 0 ? '∞' : '0.00';
+        
         const embed = new EmbedBuilder()
             .setTitle(`🛡️ ${playerData.Name}`)
             .setColor(0x0099FF)
             .addFields(
                 { name: 'Guild', value: playerData.GuildName || 'Sin guild', inline: true },
-                { name: 'Alliance', value: playerData.AllianceName || 'Sin alliance', inline: true },
-                { name: 'Kills', value: playerData.KillFame?.toString() || '0', inline: true },
-                { name: 'Deaths', value: playerData.DeathFame?.toString() || '0', inline: true },
-                { name: 'Fame Total', value: playerData.Fame?.toString() || '0', inline: true }
+                { name: 'Kill Fame', value: killFame.toLocaleString(), inline: true },
+                { name: 'Death Fame', value: deathFame.toLocaleString(), inline: true },
+                { name: 'K/D Ratio', value: ratio, inline: true },
+                { name: 'Fame Total', value: (playerData.Fame || playerData.TotalKillFame || playerData.LifetimeStatistics?.PvE?.Total || 0).toLocaleString(), inline: true }
             )
             .setTimestamp();
 
@@ -101,23 +109,23 @@ async function handleGuildInfo(interaction) {
     await interaction.deferReply();
 
     try {
-        const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(guildName)}`);
+        const response = await axios.get(`${BASE_URL}/search?q=${encodeURIComponent(guildName)}`);
         const guilds = response.data.guilds;
 
         if (!guilds || guilds.length === 0) {
-            await interaction.editReply(`No se encontró ninguna guild con el nombre "${guildName}".`);
+            await interaction.editReply(`No se encontró ninguna guild con el nombre "${guildName}" en el servidor America.`);
             return;
         }
 
         const guild = guilds[0];
-        const guildDetails = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/guilds/${guild.Id}`);
+        const guildDetails = await axios.get(`${BASE_URL}/guilds/${guild.Id}`);
         const guildData = guildDetails.data;
-
+        
         const embed = new EmbedBuilder()
             .setTitle(`⚔️ ${guildData.Name}`)
             .setColor(0xFF6B35)
             .addFields(
-                { name: 'Alliance', value: guildData.AllianceName || 'Sin alliance', inline: true },
+                { name: 'Alliance', value: guildData.AllianceName || guildData.AllianceTag || 'Sin alliance', inline: true },
                 { name: 'Miembros', value: guildData.MemberCount?.toString() || '0', inline: true },
                 { name: 'Kills', value: guildData.killFame?.toString() || '0', inline: true },
                 { name: 'Deaths', value: guildData.DeathFame?.toString() || '0', inline: true }
@@ -137,16 +145,16 @@ async function handlePlayerKills(interaction) {
     await interaction.deferReply();
 
     try {
-        const searchResponse = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(playerName)}`);
+        const searchResponse = await axios.get(`${BASE_URL}/search?q=${encodeURIComponent(playerName)}`);
         const players = searchResponse.data.players;
 
         if (!players || players.length === 0) {
-            await interaction.editReply(`No se encontró ningún jugador con el nombre "${playerName}".`);
+            await interaction.editReply(`No se encontró ningún jugador con el nombre "${playerName}" en el servidor America.`);
             return;
         }
 
         const player = players[0];
-        const killsResponse = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/players/${player.Id}/kills?range=week&limit=${limit}&offset=0`);
+        const killsResponse = await axios.get(`${BASE_URL}/players/${player.Id}/kills?range=week&limit=${limit}&offset=0`);
         const kills = killsResponse.data;
 
         if (!kills || kills.length === 0) {
