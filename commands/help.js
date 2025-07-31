@@ -26,7 +26,7 @@ module.exports = {
                     inline: false 
                 }
             )
-            .setFooter({ text: 'AlbionMarket Bot - Servidor America' })
+            .setFooter({ text: 'uferdyBot - Servidor America' })
             .setTimestamp();
 
         await interaction.reply({ embeds: [embed] });
