@@ -36,6 +36,15 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
+    const ALLOWED_CHANNEL_ID = '1391207584517722252';
+    if (interaction.channelId !== ALLOWED_CHANNEL_ID) {
+        await interaction.reply({ 
+            content: 'Este bot solo funciona en el canal designado.', 
+            ephemeral: true 
+        });
+        return;
+    }
+
     const command = interaction.client.commands.get(interaction.commandName);
 
     if (!command) {
