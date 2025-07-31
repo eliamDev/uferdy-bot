@@ -90,12 +90,12 @@ async function handlePlayerInfo(interaction) {
             .setColor(0x0099FF)
             .addFields(
                 { name: 'Guild', value: playerData.GuildName || 'Sin guild', inline: true },
-                { name: 'Kill Fame', value: killFame.toLocaleString(), inline: true },
-                { name: 'Death Fame', value: deathFame.toLocaleString(), inline: true },
+                { name: 'Fame Total', value: (playerData.Fame || playerData.TotalKillFame || playerData.LifetimeStatistics?.PvE?.Total || 0).toLocaleString(), inline: true },
+                { name: 'Info K/D', value: '>1.0 = Más fame ganado\n<1.0 = Más fame perdido\n∞ = Solo kills', inline: true },
                 { name: 'K/D Ratio', value: ratio, inline: true },
-                { name: 'Fame Total', value: (playerData.Fame || playerData.TotalKillFame || playerData.LifetimeStatistics?.PvE?.Total || 0).toLocaleString(), inline: true }
+                { name: 'Kill Fame', value: killFame.toLocaleString(), inline: true },
+                { name: 'Death Fame', value: deathFame.toLocaleString(), inline: true }
             )
-            .setFooter({ text: 'K/D Ratio: >1.0 = Más fame ganado | <1.0 = Más fame perdido | ∞ = Solo kills' })
             .setTimestamp();
 
         await interaction.editReply({ embeds: [embed] });
