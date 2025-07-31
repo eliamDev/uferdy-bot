@@ -1,4 +1,4 @@
-# uferdy-bot
+# uferdyBot
 
 Bot de Discord para Albion Online que proporciona información sobre jugadores, guilds y kills.
 

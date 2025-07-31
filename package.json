@@ -1,5 +1,5 @@
 {
-  "name": "uferdy-bot",
+  "name": "uferdyBot",
   "version": "1.0.0",
   "description": "Bot de Discord para Albion Online",
   "main": "index.js",

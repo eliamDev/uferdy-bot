@@ -26,7 +26,7 @@ module.exports = {
                     inline: false 
                 }
             )
-            .setFooter({ text: 'uferdy-bot - Servidor America' })
+            .setFooter({ text: 'uferdyBot - Servidor America' })
             .setTimestamp();
 
         await interaction.reply({ embeds: [embed] });
