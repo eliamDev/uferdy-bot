@@ -39,7 +39,7 @@ client.on('interactionCreate', async interaction => {
     const ALLOWED_CHANNEL_ID = '1391207584517722252';
     if (interaction.channelId !== ALLOWED_CHANNEL_ID) {
         await interaction.reply({ 
-            content: 'Este bot solo funciona en el canal designado.', 
+            content: 'Este bot solo funciona en el canal #albion-bot', 
             ephemeral: true 
         });
         return;
