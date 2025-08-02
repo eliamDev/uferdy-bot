@@ -22,7 +22,7 @@ module.exports = {
                 },
                 { 
                     name: '❓ Otros Comandos', 
-                    value: '`/help` - Muestra este mensaje\n`/status` - Estado del bot', 
+                    value: '`/help` - Muestra este mensaje\n`/status` - Estado del bot\n`/utc` - Hora actual en UTC', 
                     inline: false 
                 }
             )
