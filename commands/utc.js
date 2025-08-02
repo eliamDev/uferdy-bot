@@ -16,7 +16,9 @@ module.exports = {
       .setTitle("🕐 Hora UTC Actual")
       .setColor(0x0099ff)
       .addFields({
-        value: `${utcHour}:${utcMinute}:${utcSecond} UTC`,
+        name: "horaUTC",
+        value: `${utcHour}:${utcMinute}:${utcSecond}`,
+        inline: false,
       })
       .setFooter({ text: "UTC" })
       .setTimestamp();
