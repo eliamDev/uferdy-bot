@@ -15,11 +15,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("🕐 Hora UTC Actual")
       .setColor(0x0099ff)
-      .addFields({
-        name: "horaUTC",
-        value: `${utcHour}:${utcMinute}:${utcSecond}`,
-        inline: false,
-      })
+      .setDescription(`**${utcHour}:${utcMinute}:${utcSecond}**`)
       .setFooter({ text: "UTC" })
       .setTimestamp();
 
