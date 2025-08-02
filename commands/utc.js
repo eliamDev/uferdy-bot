@@ -13,10 +13,12 @@ module.exports = {
     const utcSecond = now.getUTCSeconds().toString().padStart(2, "0");
 
     const embed = new EmbedBuilder()
-      .setTitle("🕐 Hora UTC Actual")
       .setColor(0x0099ff)
-      .setDescription(`**${utcHour}:${utcMinute}:${utcSecond}**`)
-      .setFooter({ text: "UTC" })
+      .addFields({
+        name: "Hora",
+        value: `${utcHour}:${utcMinute}:${utcSecond} UTC`,
+        inline: false,
+      })
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed] });
