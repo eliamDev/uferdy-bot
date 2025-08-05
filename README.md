@@ -42,6 +42,6 @@ Muestra las últimas kills de un jugador.
 ## Documentación Legal
 
 - 📋 [**Términos de Servicio**](https://eliamdev.github.io/uferdy-bot/terms) - Condiciones de uso del bot
-- 🔐 [**Política de Privacidad**](https://eliamdev.github.io/uferdy-bot/terms/privacy) - Cómo manejamos tus datos
+- 🔐 [**Política de Privacidad**](https://eliamdev.github.io/uferdy-bot/privacy) - Cómo manejamos tus datos
 
 > **eliamDev <3**
