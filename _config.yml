@@ -1,0 +1,4 @@
+markdown: kramdown
+theme: minima
+title: "uferdyBot Documentation"
+description: "Legal documentation for uferdyBot Discord bot"
