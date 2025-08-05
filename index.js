@@ -43,7 +43,7 @@ client.on('interactionCreate', async interaction => {
     
     if (!ALLOWED_CHANNELS.includes(interaction.channelId)) {
         await interaction.reply({ 
-            content: 'Este bot solo funciona en el canal #albion-bot', 
+            content: 'Este bot solo funciona en canales autorizados', 
             ephemeral: true 
         });
         return;
