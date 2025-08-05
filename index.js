@@ -34,6 +34,14 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
+    // Manejar botones
+    if (interaction.isButton()) {
+        if (interaction.customId === 'clear_alerts') {
+            await handleClearAlerts(interaction);
+        }
+        return;
+    }
+    
     if (!interaction.isChatInputCommand()) return;
 
     const ALLOWED_CHANNELS = [
@@ -67,5 +75,44 @@ client.on('interactionCreate', async interaction => {
         }
     }
 });
+
+// Función para manejar limpieza de alertas
+async function handleClearAlerts(interaction) {
+    const fs = require('fs');
+    const path = require('path');
+    const { EmbedBuilder } = require('discord.js');
+    
+    const ALERTS_FILE = path.join(__dirname, 'price-alerts.json');
+    const userId = interaction.user.id;
+    
+    try {
+        let alerts = [];
+        if (fs.existsSync(ALERTS_FILE)) {
+            alerts = JSON.parse(fs.readFileSync(ALERTS_FILE, 'utf8'));
+        }
+        
+        // Filtrar alertas del usuario actual
+        const alertsToKeep = alerts.filter(alert => alert.userId !== userId);
+        const deletedCount = alerts.length - alertsToKeep.length;
+        
+        // Guardar alertas actualizadas
+        fs.writeFileSync(ALERTS_FILE, JSON.stringify(alertsToKeep, null, 2));
+        
+        const embed = new EmbedBuilder()
+            .setTitle('🗑️ Alertas Eliminadas')
+            .setColor(0xFF6B35)
+            .setDescription(`Se eliminaron ${deletedCount} alerta(s) correctamente.`)
+            .setTimestamp();
+            
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+        
+    } catch (error) {
+        console.error('Error limpiando alertas:', error);
+        await interaction.reply({ 
+            content: 'Error al eliminar las alertas.', 
+            ephemeral: true 
+        });
+    }
+}
 
 client.login(process.env.DISCORD_TOKEN);

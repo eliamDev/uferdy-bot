@@ -17,7 +17,7 @@ module.exports = {
                 },
                 { 
                     name: '💰 Comandos de Mercado', 
-                    value: '`/market prices <item> [ciudad]` - Precios de items\n`/market compare <item>` - Compara precios\n`/market trending` - Items populares', 
+                    value: '`/market prices <item> [ciudad]` - Precios de items\n`/market compare <item>` - Compara precios\n`/market trending` - Items populares\n`/market alert <item> <precio> [ciudad]` - 🔔 Alerta de precio\n`/market alerts` - Ver tus alertas activas', 
                     inline: false 
                 },
                 { 
