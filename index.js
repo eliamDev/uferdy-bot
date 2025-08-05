@@ -36,11 +36,12 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
-    const ALLOWED_CHANNELS = ['1391207584517722252']; // Canal original
-    const SUPPORT_SERVER_ID = '1402151147401253026'; // Servidor de soporte
+    const ALLOWED_CHANNELS = [
+        '1391207584517722252', // Canal original #albion-bot
+        '1402162897378873375'  // Canal #albion-bot del servidor de soporte
+    ];
     
-    // Permitir cualquier canal en el servidor de soporte o canal específico en otros servidores
-    if (interaction.guildId !== SUPPORT_SERVER_ID && !ALLOWED_CHANNELS.includes(interaction.channelId)) {
+    if (!ALLOWED_CHANNELS.includes(interaction.channelId)) {
         await interaction.reply({ 
             content: 'Este bot solo funciona en el canal #albion-bot', 
             ephemeral: true 
